@@ -1,5 +1,5 @@
 const express = require("express");
-const { connect } = require("near-api-js");
+const { connect, Contract } = require("near-api-js");
 const getConfig = require("./config");
 const { generateKeyPair } = require("./utils");
 var cors = require("cors");
@@ -25,17 +25,12 @@ const isKeyAdded = async (near, accountId, publicKey) => {
     return result ? 1 : 0;
 };
 
-const eventsContractInstance = (account) => {
-    const eventsContract = new nearAPI.Contract(
-        account,
-        EVENTS_CONTRACT_ADDRESS,
-        {
-            changeMethods: ["redeem"],
-            sender: account,
-        }
-    );
-    return eventsContract;
-};
+// const eventsContractInstance = (account) => {
+//     const eventsContract = new Contract(account, EVENTS_CONTRACT_ADDRESS, {
+//         changeMethods: ["redeem"],
+//     });
+//     return eventsContract;
+// };
 
 const redeemCall = async (eventsContract, ticketId) => {
     const tx = await eventsContract.redeem({
@@ -82,9 +77,13 @@ app.get("/connectwallet", async (req, res, next) => {
 app.get("/redeem", async (req, res, next) => {
     let { accountId, ticketId } = req.query;
     let account = await near.account(accountId);
-    let eventsContract = eventsContractInstance(account);
-    let tx = await redeemCall(eventsContract, ticketId);
-    console.log(tx);
+    let tx = await account.functionCall({
+        contractId: EVENTS_CONTRACT_ADDRESS,
+        methodName: "redeem",
+        args: {
+            ticketId: ticketId.replace("/", ""),
+        },
+    });
     return res.status(200).json({
         data: tx,
     });
