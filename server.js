@@ -64,4 +64,6 @@ app.get("/redeem", async (req, res, next) => {
 });
 
 init();
-app.listen(process.env.PORT);
+app.listen(process.env.PORT).on("listening", () => {
+    console.log(`Listening on port: ${PORT}`);
+});
