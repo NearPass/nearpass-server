@@ -18,7 +18,7 @@ const addKeyPair = async (ctx, networkId, accountId, keyPair) => {
     return content.private_key;
 };
 
-export const isKeyAdded = async (near, accountId, publicKey) => {
+const isKeyAdded = async (near, accountId, publicKey) => {
     const account = await near.account(accountId);
     const keys = await account.getAccessKeys();
     let result = keys.filter((key) => {
