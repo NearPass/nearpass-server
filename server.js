@@ -51,16 +51,22 @@ app.get("/connectwallet", async (req, res, next) => {
 app.get("/redeem", async (req, res, next) => {
     let { accountId, ticketId } = req.query;
     let account = await near.account(accountId);
-    let tx = await account.functionCall({
-        contractId: EVENTS_CONTRACT_ADDRESS,
-        methodName: "redeem",
-        args: {
-            ticketId: ticketId.replace("/", ""),
-        },
-    });
-    return res.status(200).json({
-        data: tx,
-    });
+    try {
+        let tx = await account.functionCall({
+            contractId: EVENTS_CONTRACT_ADDRESS,
+            methodName: "redeem",
+            args: {
+                ticketId: ticketId.replace("/", ""),
+            },
+        });
+        return res.status(200).json({
+            data: tx,
+        });
+    } catch (err) {
+        return res.status(400).json({
+            data: err,
+        });
+    }
 });
 
 init();
