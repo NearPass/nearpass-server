@@ -1,7 +1,7 @@
 const express = require("express");
 const { connect, Contract } = require("near-api-js");
 const getConfig = require("./config");
-const { generateKeyPair } = require("./utils");
+const { generateKeyPair, isKeyAdded } = require("./utils");
 var cors = require("cors");
 const { UnencryptedFileSystemKeyStore } = require("near-api-js/lib/key_stores");
 
@@ -15,32 +15,6 @@ async function init() {
     keyStore = new UnencryptedFileSystemKeyStore("./keyStore");
     near = await connect({ keyStore, ...nearConfig });
 }
-
-const isKeyAdded = async (near, accountId, publicKey) => {
-    const account = await near.account(accountId);
-    const keys = await account.getAccessKeys();
-    let result = keys.filter((key) => {
-        return key.public_key == publicKey;
-    });
-    return result ? 1 : 0;
-};
-
-// const eventsContractInstance = (account) => {
-//     const eventsContract = new Contract(account, EVENTS_CONTRACT_ADDRESS, {
-//         changeMethods: ["redeem"],
-//     });
-//     return eventsContract;
-// };
-
-const redeemCall = async (eventsContract, ticketId) => {
-    const tx = await eventsContract.redeem({
-        args: {
-            ticketId,
-        },
-    });
-
-    return tx;
-};
 
 const app = express();
 app.use(express.json());
