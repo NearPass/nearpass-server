@@ -61,10 +61,12 @@ app.get("/redeem", async (req, res, next) => {
         });
         return res.status(200).json({
             data: tx,
+            error: false,
         });
     } catch (err) {
-        return res.status(400).json({
+        return res.status(200).json({
             data: err,
+            error: true,
         });
     }
 });
