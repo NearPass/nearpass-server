@@ -89,11 +89,5 @@ app.get("/redeem", async (req, res, next) => {
     });
 });
 
-app.get("/", (req, res, next) => {
-    res.status(200).json({
-        sign_in_link: `https://wallet.testnet.near.org/login?title=tgbot&public_key=&methodNames=`,
-    });
-});
-
 init();
-app.listen(3000);
+app.listen(process.env.PORT);
