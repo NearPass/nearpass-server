@@ -7,3 +7,17 @@ Server is deployed at: [https://nearpass-server-production.up.railway.app](https
 Since, Near doesn't have a solution to connect wallet in react native I created a server that uses Unencrypted KeyStore to store the function keys for the wallet connected to the app.
 
 This server lets mobile user connect near wallet and also lets the event manager verify tickets using phone.
+
+### How to run?
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the server:
+
+```bash
+npm start
+```
