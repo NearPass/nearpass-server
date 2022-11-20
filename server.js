@@ -8,7 +8,7 @@ const { UnencryptedFileSystemKeyStore } = require("near-api-js/lib/key_stores");
 let keyStore;
 let near;
 
-const EVENTS_CONTRACT_ADDRESS = "dev-1668778263293-24535046189612";
+const EVENTS_CONTRACT_ADDRESS = "dev-1668959834533-28425576741770";
 
 async function init() {
     const nearConfig = getConfig("testnet");
